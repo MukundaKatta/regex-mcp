@@ -1,0 +1,21 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.MukundaKatta/regex",
+  "description": "MCP server: test a regex against text and get matches with positions and capture groups.",
+  "version": "0.1.1",
+  "repository": {
+    "url": "https://github.com/MukundaKatta/regex-mcp",
+    "source": "github"
+  },
+  "websiteUrl": "https://github.com/MukundaKatta/regex-mcp",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "@mukundakatta/regex-mcp",
+      "version": "0.1.1",
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ]
+}
