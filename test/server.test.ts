@@ -60,3 +60,33 @@ test('handles zero-width pattern without infinite loop', () => {
   // 3 zero-width matches before each 'a'.
   assert.equal(r.match_count, 3);
 });
+
+test('unmatched optional groups become null', () => {
+  const r = findMatches('(a)(b)?', 'a');
+  assert.deepEqual(r.matches[0].groups, ['a', null]);
+});
+
+test('returns empty result when there are no matches', () => {
+  const r = findMatches('z+', 'abc');
+  assert.equal(r.match_count, 0);
+  assert.deepEqual(r.matches, []);
+});
+
+test('max_matches of 0 yields no matches', () => {
+  const r = findMatches('a', 'aaa', '', 0);
+  assert.equal(r.match_count, 0);
+});
+
+test('rejects non-string pattern', () => {
+  // @ts-expect-error intentionally passing a non-string
+  assert.throws(() => findMatches(123, 'x'), /pattern must be a string/);
+});
+
+test('rejects non-string text', () => {
+  // @ts-expect-error intentionally passing a non-string
+  assert.throws(() => findMatches('a', undefined), /text must be a string/);
+});
+
+test('rejects negative max_matches', () => {
+  assert.throws(() => findMatches('a', 'a', '', -1), /non-negative integer/);
+});

@@ -13,7 +13,7 @@ import {
   ListToolsRequestSchema,
 } from '@modelcontextprotocol/sdk/types.js';
 
-const VERSION = '0.1.0';
+const VERSION = '0.1.1';
 
 export interface MatchResult {
   match: string;
@@ -43,6 +43,20 @@ export function findMatches(
   flags = '',
   maxMatches = 1000,
 ): RegexResult {
+  // Validate inputs upfront so we can give a clear error instead of
+  // silently coercing undefined/non-strings into a "/undefined/" regex.
+  if (typeof pattern !== 'string') {
+    throw new Error('pattern must be a string');
+  }
+  if (typeof text !== 'string') {
+    throw new Error('text must be a string');
+  }
+  if (typeof flags !== 'string') {
+    throw new Error('flags must be a string');
+  }
+  if (typeof maxMatches !== 'number' || !Number.isInteger(maxMatches) || maxMatches < 0) {
+    throw new Error('max_matches must be a non-negative integer');
+  }
   // Validate flags upfront so we can give a clear error.
   for (const f of flags) {
     if (!ALLOWED_FLAGS.has(f)) {
